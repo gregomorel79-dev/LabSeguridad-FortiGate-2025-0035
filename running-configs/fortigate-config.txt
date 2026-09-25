@@ -1,0 +1,129 @@
+========================================
+CONFIGURACION FORTIGATE - LAB SEGURIDAD
+Estudiante: Gregorys Morel Duluc
+Matricula: 2025-0035
+========================================
+
+NOTA: Configuracion documentada segun diseno, basada en guia oficial
+Fortinet (docs.fortinet.com/document/fortigate/7.4.0/administration-guide/826586)
+debido a limitaciones de hardware para ejecucion en vivo del FortiGate-VM.
+
+--- INTERFACES ---
+config system interface
+    edit "port2"
+        set ip 10.0.35.1 255.255.255.240
+        set allowaccess ping https
+    next
+    edit "port2.10"
+        set vlanid 10
+        set ip 10.0.35.129 255.255.255.128
+        set allowaccess ping
+    next
+end
+
+--- DHCP SERVER (VLAN 10) ---
+config system dhcp server
+    edit 1
+        set interface "port2.10"
+        set start-ip 10.0.35.130
+        set end-ip 10.0.35.254
+        set default-gateway 10.0.35.129
+    next
+end
+
+--- RUTA POR DEFECTO ---
+config router static
+    edit 1
+        set gateway <IP_WAN>
+        set device "port1"
+    next
+end
+
+--- DIRECCIONES ---
+config firewall address
+    edit "LAN_Usuarios"
+        set subnet 10.0.35.128 255.255.255.128
+    next
+    edit "WEB-Server"
+        set subnet 10.0.35.2 255.255.255.255
+    next
+    edit "DB-Server"
+        set subnet 10.0.35.3 255.255.255.255
+    next
+end
+
+--- POLITICA 1: Usuarios -> WEB-Server (443) ---
+config firewall policy
+    edit 1
+        set srcintf "port2.10"
+        set dstintf "port2"
+        set srcaddr "LAN_Usuarios"
+        set dstaddr "WEB-Server"
+        set action accept
+        set service "HTTPS"
+        set ssl-ssh-profile "deep-inspection"
+        set ips-sensor "SQLi-Protection"
+        set nat enable
+        set logtraffic all
+    next
+
+--- POLITICA 2: Usuarios -> DB-Server (BLOQUEO) ---
+    edit 2
+        set srcintf "port2.10"
+        set dstintf "port2"
+        set srcaddr "LAN_Usuarios"
+        set dstaddr "DB-Server"
+        set action deny
+        set service "MYSQL"
+        set logtraffic all
+    next
+
+--- POLITICA 3: WEB-Server -> DB-Server (solo 3306) ---
+    edit 3
+        set srcintf "port2"
+        set dstintf "port2"
+        set srcaddr "WEB-Server"
+        set dstaddr "DB-Server"
+        set action accept
+        set service "MYSQL"
+        set logtraffic all
+    next
+
+--- POLITICA 4: WEB-Server -> resto (DENY catch-all) ---
+    edit 4
+        set srcintf "port2"
+        set dstintf "any"
+        set srcaddr "WEB-Server"
+        set dstaddr "all"
+        set action deny
+        set logtraffic all
+    next
+end
+
+--- IPS PROFILE: Anti SQL Injection con cuarentena ---
+config ips sensor
+    edit "SQLi-Protection"
+        config entries
+            edit 1
+                set rule "SQL.Injection"
+                set action block
+                set quarantine attacker
+                set quarantine-expiry 1h
+            next
+        end
+    next
+end
+
+--- FILE FILTER: Bloqueo de .exe ---
+config file-filter profile
+    edit "Block-EXE"
+        config rules
+            edit "block-exe"
+                set action block
+                set file-type "exe"
+            next
+        end
+    next
+end
+
+--- DOS POLICY: Anti
