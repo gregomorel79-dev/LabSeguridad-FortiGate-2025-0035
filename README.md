@@ -26,7 +26,8 @@ pasos y parámetros que se aplicarían sobre el dispositivo activo.
 Fuente oficial: https://docs.fortinet.com/document/fortigate/7.4.0/administration-guide/826586
 
 ## Diagrama de topología
-![topologia](diagramas/topologia.png)
+<img width="1047" height="632" alt="Captura de pantalla 2026-09-25 140428" src="https://github.com/user-attachments/assets/02849d73-b4ae-4bb5-8007-c29df69b0cf2" />
+
 
 ## Direccionamiento IP (basado en matrícula 2025-0035)
 
