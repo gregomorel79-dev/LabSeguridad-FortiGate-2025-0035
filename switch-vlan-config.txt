@@ -1,0 +1,9 @@
+# Switch1 (GNS3 Ethernet switch) - VLANs
+# Gregorys Morel Duluc - 2025-0035
+Puerto 1 - WEB-Server       - access - VLAN 1
+Puerto 2 - DB-Server        - access - VLAN 1
+Puerto 4 - PC3 Usuario      - access - VLAN 10
+Puerto 5 - FortiGate port1  - access - VLAN 10
+Puerto 6 - Cloud1 (gestion) - access - VLAN 1
+Puerto 7 - FortiGate port3  - access - VLAN 1
+Puerto 8 - Usuario-Linux    - access - VLAN 10
