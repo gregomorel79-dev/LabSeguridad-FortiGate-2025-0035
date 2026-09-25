@@ -1,0 +1,21 @@
+========================================
+CONFIGURACION SWITCH - LAB SEGURIDAD
+Estudiante: Gregorys Morel Duluc
+Matricula: 2025-0035
+========================================
+
+Switch: Switch1 (GNS3 Ethernet Switch)
+
+Tabla de puertos:
+Puerto 0 (hacia FortiGate) -> VLAN 1  - trunk/native
+Puerto 1 (sin uso)          -> VLAN 1  - access
+Puerto 2 (hacia PC1/WEB)    -> VLAN 1  - access
+Puerto 3 (hacia PC2/DB)     -> VLAN 1  - access
+Puerto 4 (hacia PC3/Usuario)-> VLAN 10 - access
+
+VLAN 10 = Segmento de usuarios (10.0.35.128/25)
+VLAN 1 (nativa) = Segmento de servidores (10.0.35.0/28)
+
+Direccionamiento basado en matricula 2025-0035:
+- Servidores: 10.0.35.0/28, gateway 10.0.35.1
+- Usuarios (VLAN10): 10.0.35.128/25, gateway 10.0.35.129, DHCP 10.0.35.130-254
