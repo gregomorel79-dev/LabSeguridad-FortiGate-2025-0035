@@ -4,6 +4,13 @@
 **Matrícula:** 2025-0035
 **Práctica:** P1 – Seguridad de Redes (ITLA)
 
+  **[VER VIDEO AQUÍ]
+https://youtu.be/gdNagu2vQR8
+https://youtu.be/gdNagu2vQR8
+https://youtu.be/gdNagu2vQR8
+https://youtu.be/gdNagu2vQR8
+https://youtu.be/gdNagu2vQR8)
+
 
 ## 1. Propósito del laboratorio
 
